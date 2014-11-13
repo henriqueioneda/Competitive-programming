@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int stalls[100010];
+int c, n, t;
+
+bool checa(int menor)
+{
+    int cont = 0, i = 1, k = 0;
+    bool vale = true;
+    while (vale){
+        while ( (stalls[k+i] - stalls[k] < menor)&&(vale) ){
+            i++;
+            if (k+i>=n){
+                vale = false;
+                i--;
+            }
+        }
+        if (!vale) i++;
+        cont++;
+        k += i;
+        i = 1;
+    }
+    return (cont >= c);
+}
+
+int main()
+{
+    scanf("%d", &t);
+    while (t>0)
+    {
+        scanf("%d %d", &n, &c);
+        memset(stalls, -1, sizeof(stalls));
+        for (int k = 0; k<n; k++){
+            scanf("%d", &stalls[k]);
+        }
+
+        sort(stalls, stalls+n);
+
+        int l=1, r = stalls[n-1];
+        while (l<r){
+            int menor = (l+r+1)/2;
+            if (checa(menor)) l = menor;
+            else r = menor - 1;
+        }
+        --t;
+        printf("%d\n", l);
+    }
+    return 0;
+}
