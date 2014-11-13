@@ -1,0 +1,37 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 6000
+#define INF 1e8;
+
+int p[MAX], s[MAX], ind[MAX], dp[MAX], r;
+
+bool cmp(int a, int b)
+{
+	return (s[a]>s[b]);
+}
+
+int main()
+{
+	while (scanf("%d", &p[r]) >0){
+		scanf("%d", &s[r]);
+		s[r] = s[r] - p[r];
+		ind[r] = r;
+		++r;
+	}
+
+	sort(ind, ind + r, cmp);
+
+	int atual = 0, maior = 0;
+	dp[0] = INF;
+	for (int i=0; i<r; ++i){
+		for (int j=maior; j>=0; --j){
+			atual = min(dp[j]-p[ind[i]], s[ind[i]]);
+			if (atual >= dp[j+1]){
+				dp[j+1] = atual;
+				maior = max(maior, j+1);
+			}
+		}
+	}
+	printf("%d\n", maior);
+	return 0;
+}
