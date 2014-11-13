@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 109
+
+int n, m, par[MAX], teste, resp;
+
+int vis[MAX], adj[MAX][MAX], deg[MAX], fila[MAX];
+
+void bfs(int s)
+{
+	int l=0, r=0;
+	fila[r++] = s;
+	par[s] = 0;
+	vis[s] = 1;
+	while ((l<r)&&(!resp)){
+		int v = fila[l++];
+		for (int i=0; i<deg[v]; ++i){
+			int nxt = adj[v][i];
+			if (!vis[nxt]){
+				fila[r++] = nxt;
+				vis[nxt] = 1;
+				par[nxt] = (par[v] + 1)%2;
+			}
+			else{
+				if ((par[nxt] == par[v])&&(nxt != v))	resp = 1;
+			}
+		}
+	}
+}
+
+int main()
+{
+	while (scanf("%d", &n) > 0){
+		scanf("%d", &m);
+		for (int i=0; i<m; ++i){
+			int a, b;
+			scanf("%d", &a);
+			scanf("%d", &b);
+			a--, b--;
+			adj[a][deg[a]++] = b;
+			adj[b][deg[b]++] = a;
+		}
+		resp = 0;
+		bfs(adj[0][0]);
+		memset(par, -1, sizeof(par));
+		memset(deg, 0, sizeof(deg));
+		memset(vis, 0, sizeof(vis));
+		printf("Instancia %d\n", ++teste);
+		if (!resp)	printf("sim\n\n");
+		else	printf("nao\n\n");
+	}
+	return 0;
+}
