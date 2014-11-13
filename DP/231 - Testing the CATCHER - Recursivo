@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 33000
+
+int dp[MAX], heights[MAX], n, h, test;
+
+int solve(int i)
+{
+	if (i == n) return 0;
+	if (dp[i] != -1) return dp[i];
+	int maior = 0, prox = 0;
+	for (int k=i+1; k<n; ++k){
+		if (heights[k] <= heights[i]) prox = solve(k);
+		if (prox > maior) maior = prox;
+	}
+	return dp[i] = 1 + maior;
+}
+
+int main()
+{
+	n = 1;
+	while (n != 0){
+		++test;
+		n = 0;
+		memset(dp, -1, sizeof(dp));
+		scanf("%d", &h);
+		heights[0] = h;
+		while (h != -1){
+			++n;
+			scanf("%d", &h);
+			heights[n] = h;
+		}
+
+		int best = 0, atual = 0;
+		
+		if(n!=0){
+			if(test >1) printf("\n");
+			printf("Test #%d:\n", test);
+			for (int k=0; k<n; ++k){
+				atual = solve(k);
+				if (atual > best) best = atual;
+			}
+			printf("  maximum possible interceptions: %d\n", best);
+		}
+	}
+	return 0;
+}
