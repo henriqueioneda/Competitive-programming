@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 35000
+
+int dp[MAX], len, heights[MAX], h, test, n;
+
+int search(int h, int tam)
+{
+	int l = 0, r = tam-1, key = 0;
+	while (l<r){
+		key = (l + r)/2;
+		if (dp[key]<=h) r = key;
+		else  l = key+1;
+	}
+	if (dp[key] > h) ++key;
+	return key;
+}
+
+int main()
+{
+	n = 1
+;	while (n != 0){
+		++test;
+		n = 0;
+		memset(dp, -1, sizeof(dp));
+		scanf("%d", &h);
+		heights[0] = h;
+		while (h != -1){
+			++n;
+			scanf("%d", &h);
+			heights[n] = h;
+		}
+		
+		if(n!=0){
+			if(test >1) printf("\n");
+			printf("Test #%d:\n", test);
+
+			dp[0] = heights[0];
+			len = 1;
+			for (int i=1; i<n; ++i){
+				if (heights[i] <= dp[len-1]){
+					dp[len] = heights[i];
+					len++;
+				}
+				else{
+					dp[ search(heights[i], len) ] = heights[i];
+				}
+			}
+
+			for (int k=0; k<len; ++k) cout << dp[k] << " ";
+
+			printf("  maximum possible interceptions: %d\n", len);
+		}
+	}
+	return 0;
+}
