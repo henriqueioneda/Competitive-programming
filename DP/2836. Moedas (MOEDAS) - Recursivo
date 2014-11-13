@@ -1,0 +1,41 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 102;
+
+int m, n;
+int moedas[MAX];
+int dp[50010];
+
+int f(int num)
+{
+    if (num == 0) return 0;
+    if (num < 0) return 50000;
+    if (dp[num] > 0) return dp[num];
+
+    int menor = 1000000;
+    for (int k=0; k<n; ++k){
+        int novo = f(num - moedas[k]);
+        if (novo < menor) menor = novo;
+    }
+    return dp[num] = 1+ menor;
+}
+
+int main()
+{
+    scanf("%d", &m);
+    while (m!=0){
+    scanf("%d", &n);
+    for (int k=0; k<n; ++k){
+        scanf("%d", &moedas[k]);
+    }
+    memset(dp, 0, sizeof(dp));
+    int resposta = f(m);
+    if (f(m)<50001) printf("%d\n", resposta);
+    else printf("Impossivel\n");
+    scanf("%d", &m);
+
+    }
+    return 0;
+}
+
