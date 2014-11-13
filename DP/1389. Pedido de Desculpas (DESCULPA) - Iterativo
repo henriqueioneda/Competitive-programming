@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX_C = 1009;
+const int MAX_F = 59;
+const int MAX_N = 209;
+const int MAX_D = 25;
+
+int frases[2][MAX_F];
+int dp[MAX_C];
+
+int main()
+{
+	int C, F;
+	scanf("%d", &C);
+	int resposta;
+	int teste = 0;
+	while (C != 0){
+		++teste;
+		resposta = 0;
+		for(int i=0; i<=C; ++i)
+			dp[i] = 0;
+		scanf("%d", &F);
+		for (int i=0; i<F; ++i)
+			scanf("%d %d", &frases[0][i], &frases[1][i]);
+		for (int i=0; i<F; ++i){
+			for (int w=C; w>=0; --w){
+				if (w >= frases[0][i]) dp[w] = max( dp[w], frases[1][i] + dp[w-frases[0][i]] );
+				if (dp[w] > resposta) resposta = dp[w];
+			}
+		}
+	printf("Teste %d\n", teste);
+	printf("%d\n\n", resposta);
+	scanf("%d", &C);
+	}
+	return 0;
+}
+
