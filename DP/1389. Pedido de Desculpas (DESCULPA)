@@ -1,0 +1,38 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAX = 51;
+int C, F;
+int frases[2][MAX];
+int vetor[MAX][1010];
+
+int f(int tamanho, int position)
+{
+    if (tamanho == 0) return 0;
+    else { if (tamanho < 0) return -100000;}
+    if (position >= F) return 0;
+    if (vetor[position][tamanho] != -1) return vetor[position][tamanho];
+    else return vetor[position][tamanho] = max(f(tamanho - frases[0][position], position + 1) + frases[1][position], f(tamanho, position + 1));
+}
+
+
+int main()
+{
+    int Teste = 0;
+    scanf("%d", &C);
+    while (C != 0){
+        Teste += 1;
+        memset(vetor, -1, sizeof(vetor));
+        scanf("%d", &F);
+        for (int k=0; k<F; ++k){
+            scanf("%d", &frases[0][k]);
+            scanf("%d", &frases[1][k]);
+        }
+
+    printf("Teste %d\n", Teste);
+    printf("%d\n\n", f(C, 0));
+    scanf("%d", &C);
+    }
+    return 0;
+}
+
