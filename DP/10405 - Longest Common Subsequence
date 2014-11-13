@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+char x[1009], y[1009];
+int dp[1009][1009];
+
+int lcs(int i, int j)
+{
+	if (dp[i][j] < 0){
+	    if (x[i] == '\0' || y[j] == '\0') dp[i][j] = 0;
+	    else if (x[i] == y[j]) dp[i][j] = 1 + lcs(i+1, j+1);
+	    else dp[i][j] = max(lcs(i+1, j), lcs(i, j+1));
+	}
+	return dp[i][j];
+}
+
+int main()
+{
+	while (gets(x) != NULL){
+		gets(y);
+
+		int lenx = strlen(x);
+		int leny = strlen(y);
+
+		memset(dp, -1, sizeof(dp));
+
+		printf("%d\n", lcs(0,0));
+	}
+	return 0;
+}
