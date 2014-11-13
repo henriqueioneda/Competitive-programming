@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX_V 59
+#define MAX_E 2509
+
+int c, e, l, p, teste;
+int vis[MAX_V], ped[MAX_V], adj[MAX_V][MAX_E], fila[MAX_E], deg[MAX_V];
+
+void bfs(int s)
+{
+	int k = 0, r = 0;
+	fila[r++] = s;
+	vis[s] = 1;
+	ped[s] = p;
+	while (k<r){
+		int v = fila[k++];
+		for (int i=0; i<deg[v]; ++i){
+			int nxt = adj[v][i];
+			if(!vis[nxt]){
+				vis[nxt] = 1;
+				fila[r++] = nxt;
+				ped[nxt] = ped[v] - 1;
+			}
+		}
+	}
+}
+
+int main()
+{
+	scanf("%d", &c);
+	while (c!=0){
+		scanf("%d", &e);
+		scanf("%d", &l);
+		l--;
+		scanf("%d", &p);
+		for (int i=0; i<e; ++i){
+			int x, y;
+			scanf("%d", &x);
+			scanf("%d", &y);
+			x--, y--;
+			adj[x][deg[x]++] = y;
+			adj[y][deg[y]++] = x;
+		}
+		memset(ped, -1, sizeof(ped));
+		bfs(l);
+		printf("Teste %d\n", ++teste);
+		for (int i=0; i<c; ++i){
+			if((ped[i] >= 0)&&(i!=l)) printf("%d ", i+1);
+		}
+		printf("\n\n");
+
+		memset(deg, 0, sizeof(deg));
+		memset(vis, 0, sizeof(vis));
+		scanf("%d", &c);
+	}
+	return 0;
+ }
