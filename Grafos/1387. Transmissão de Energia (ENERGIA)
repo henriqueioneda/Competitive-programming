@@ -1,0 +1,40 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 109
+
+int adj[MAX][MAX], deg[MAX], vis[MAX];
+int numV, numE, teste, ans;
+
+void dfs(int v)
+{
+	vis[v] = 1;
+	for (int i=0; i<deg[v]; ++i){
+		int nxt = adj[v][i];
+		if (!vis[nxt]) dfs(nxt);
+	}
+}
+
+int main()
+{
+	cin >> numV >> numE;
+	while (numV > 0){
+		ans = 1;
+		for (int i=0; i<numE; ++i){
+			int vi, vj;
+			cin >> vi >> vj;
+			adj[vi][deg[vi]++] = vj;
+			adj[vj][deg[vj]++] = vi;
+		}
+		dfs(1);
+		printf("Teste %d\n", ++teste);
+		for (int i=1; i<=numV; ++i){
+			if (vis[i]<1) ans = 0;
+		}
+		if (ans) printf("normal\n\n");
+		else printf("falha\n\n");
+		memset(deg, 0, sizeof(deg));
+		memset(vis, 0, sizeof(vis));
+		cin >> numV >> numE;
+	}
+	return 0;
+}
