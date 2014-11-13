@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int INF = 100000;
+const int MAX = 109;
+
+int dp[MAX][MAX], valores[MAX];
+
+int solve(int i, int j, int nivel)
+{
+	if (i == j) return valores[i]*nivel;
+	if (dp[i][j] != -1){
+		int sum = 0;
+		for (int k=i; k<=j; ++k) sum += valores[k];
+			return dp[i][j] + sum*nivel;
+	}
+	int aux, menor = INF;
+
+	for (int k=i; k<=j; ++k){
+		if (k==i) aux = solve(i+1, j, nivel+1) + valores[k]*nivel;
+		else{
+			if (k==j) aux = solve(i, j-1, nivel+1) + valores[k]*nivel;
+			else aux = solve(i, k-1, nivel+1) + solve(k+1, j, nivel+1) + valores[k]*nivel;
+		}
+		if (aux < menor) menor = aux;
+	}
+	int csum = 0;
+	for (int k=i; k<=j; ++k) csum += valores[k];
+	dp[i][j] = menor - csum*nivel;
+	return menor;
+}
+
+int main()
+{
+	int n, teste=0;
+	scanf("%d", &n);
+	while (n != 0)
+	{
+		for (int i=0; i<n; ++i) scanf("%d", &valores[i]);
+		memset(dp, -1, sizeof(dp));
+		++teste;
+		printf("Teste %d\n", teste);
+		printf("%d\n\n", solve(0, n-1, 0));
+		scanf("%d", &n);
+	}
+	return 0;
+}
