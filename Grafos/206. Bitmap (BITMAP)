@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 189
+#define for(i, k) for(int i=0; i<k; ++i)
+
+int fila[2][MAX*MAX], vis[MAX][MAX], dist[MAX][MAX], l, r;
+char mapa[MAX][MAX];
+int n, m, t;
+int dx[4] = {0,0,1,-1};
+int dy[4] = {1,-1,0,0};
+
+void bfs()
+{
+	while(l<r){
+		int vx = fila[0][l];
+		int vy = fila[1][l++];
+		for(k, 4){
+			int x = vx+dx[k], y = vy+dy[k];
+			if (x>=0 && x<n && y>=0 && y<m && !vis[x][y]){
+				vis[x][y] = 1;
+				dist[x][y] = dist[vx][vy] + 1;
+				fila[0][r] = x;
+				fila[1][r++ ] = y; 
+			}
+		}
+	}
+}
+int main()
+{
+	scanf("%d", &t);
+	while (t-->0){
+		l = r = 0;
+		scanf("%d %d", &n, &m);
+		for(i, n){
+			for(j, m){
+				char v;
+				scanf(" %c", &v);
+				mapa[i][j] = v;
+				if (v == '1'){
+					fila[0][r] = i;
+					fila[1][r++] = j;
+					dist[i][j] = 0;
+					vis[i][j] = 1;
+				}
+			}
+		}
+		bfs();
+		for(i, n){
+			for(j, m){
+				printf("%d ", dist[i][j]);
+			}
+			printf("\n");
+		}
+		memset(vis, 0, sizeof(vis));
+	}
+	return 0;
+}
