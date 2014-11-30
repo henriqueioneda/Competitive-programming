@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 1000009
+
+int fila[MAX], N, vis[MAX], dist[MAX], deg[MAX], maior;
+
+vector< vector<int> > adj(MAX);
+
+void bfs(int s)
+{
+	int l=0, r=0;
+	vis[s] = 1;
+	fila[r++] = s;
+	dist[s] = 0;
+	maior = s;
+	while (l<r){
+		int v = fila[l++];
+		for (int i=0; i<deg[v]; ++i){
+			int nxt = adj[v][i];
+			if (!vis[nxt]){
+				vis[nxt] = 1;
+				fila[r++] = nxt;
+				dist[nxt] = dist[v] +1;
+				if (dist[nxt] > dist[maior]) maior = nxt; 
+			}
+		}
+	}
+}
+
+int main()
+{
+	scanf("%d", &N);
+	for (int i=0; i<N-1; ++i){
+		int x, y;
+		scanf("%d %d", &x, &y);
+		--x, --y;
+		adj[x].push_back(y);
+		deg[x]++;
+		adj[y].push_back(x);
+		deg[y]++;
+	}
+	bfs(0);
+	memset(vis, 0, sizeof(vis));
+	bfs(maior);
+	printf("%d", dist[maior]);
+	return 0;
+}
