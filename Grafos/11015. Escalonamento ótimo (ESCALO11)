@@ -4,38 +4,35 @@ using namespace std;
 #define MAX_M 200009
 
 vector< vector<int> > adj(MAX_N);
+set<int> valid;
+set<int>::iterator it;
 int N, M;
 int deg[MAX_N], indeg[MAX_N], vis[MAX_N];
 vector<int> resp;
-queue<int> q;
 
 void findv()
 {
-	int max = MAX_N, novo = 0;
 	for (int i=0; i<N; ++i){
-		if ((indeg[i] == 0)&&(i<max)&&(!vis[i])){
-			max = i;
-			novo = 1;
-		}
-	}
-	if(novo){
-		resp.push_back(max);
-		vis[max] = 1;
-		q.push(max);
+		if (indeg[i] == 0) valid.insert(i);
 	}
 }
 
 void bfs()
 {	
 	findv();
-	while(q.size()>0){
-		int v = q.front();
+	while(valid.size()>0){
+		it = valid.begin();
+		int v = *it;
+		resp.push_back(v);
+		vis[v] = 1;
 		for (int i=0; i<deg[v]; ++i){
 			int nxt = adj[v][i];
-			if(!vis[nxt]) indeg[nxt]--;
+			if(!vis[nxt]){
+				indeg[nxt]--;
+				if(indeg[nxt] == 0) valid.insert(nxt);
+			}
 		}
-		findv();
-		q.pop();
+		valid.erase(v);
 	}
 }
 
@@ -59,6 +56,5 @@ int main()
 	}
 	else
 		printf("*");
-
 	return 0;
 }
