@@ -1,0 +1,64 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX_N 50009
+#define MAX_M 200009
+
+vector< vector<int> > adj(MAX_N);
+int N, M;
+int deg[MAX_N], indeg[MAX_N], vis[MAX_N];
+vector<int> resp;
+queue<int> q;
+
+void findv()
+{
+	int max = MAX_N, novo = 0;
+	for (int i=0; i<N; ++i){
+		if ((indeg[i] == 0)&&(i<max)&&(!vis[i])){
+			max = i;
+			novo = 1;
+		}
+	}
+	if(novo){
+		resp.push_back(max);
+		vis[max] = 1;
+		q.push(max);
+	}
+}
+
+void bfs()
+{	
+	findv();
+	while(q.size()>0){
+		int v = q.front();
+		for (int i=0; i<deg[v]; ++i){
+			int nxt = adj[v][i];
+			if(!vis[nxt]) indeg[nxt]--;
+		}
+		findv();
+		q.pop();
+	}
+}
+
+int main()
+{
+	scanf("%d %d", &N, &M);	
+	while (M>0){
+		int A, B;
+		scanf("%d %d", &A, &B);
+		adj[A].push_back(B);
+		deg[A]++;
+		indeg[B]++;
+		M--;
+	}
+	bfs();
+	int tam = resp.size();
+	if (tam==N){
+		for(int i=0; i<tam; ++i){
+			printf("%d\n", resp[i]);
+		}
+	}
+	else
+		printf("*");
+
+	return 0;
+}
