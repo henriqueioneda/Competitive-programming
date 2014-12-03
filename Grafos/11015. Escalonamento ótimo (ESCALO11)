@@ -7,7 +7,7 @@ vector< vector<int> > adj(MAX_N);
 set<int> valid;
 set<int>::iterator it;
 int N, M;
-int deg[MAX_N], indeg[MAX_N], vis[MAX_N];
+int indeg[MAX_N], vis[MAX_N];
 vector<int> resp;
 
 void findv()
@@ -25,7 +25,7 @@ void bfs()
 		int v = *it;
 		resp.push_back(v);
 		vis[v] = 1;
-		for (int i=0; i<deg[v]; ++i){
+		for (int i=0; i<adj[v].size(); ++i){
 			int nxt = adj[v][i];
 			if(!vis[nxt]){
 				indeg[nxt]--;
@@ -43,7 +43,6 @@ int main()
 		int A, B;
 		scanf("%d %d", &A, &B);
 		adj[A].push_back(B);
-		deg[A]++;
 		indeg[B]++;
 		M--;
 	}
