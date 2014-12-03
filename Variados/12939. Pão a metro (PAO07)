@@ -1,0 +1,45 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX 10009
+
+vector<int> breads;
+int N, K, maior;
+
+bool serve(int tam)
+{
+	int qnt = 0;
+	for (int i=0; i<K; ++i){
+		int b = breads[i];
+		while (b-tam >= 0){
+			b = b - tam;
+			qnt++;
+		}
+	}
+	return (qnt >= N);
+}
+
+int search()
+{
+	int l = 1, r = maior, key;
+	while (l<r){
+		key = (l + r)/2 + 1;
+		if (serve(key)) l = key;
+		else r = key-1;
+	}
+	return r;
+}
+
+int main()
+{
+	scanf("%d", &N);
+	scanf("%d", &K);
+	maior = 0;
+	for (int i=0; i<K; ++i){
+		int M;
+		scanf("%d", &M);
+		breads.push_back(M);
+		if (M>maior) maior = M;
+	}
+	printf("%d", search());
+	return 0;
+}
