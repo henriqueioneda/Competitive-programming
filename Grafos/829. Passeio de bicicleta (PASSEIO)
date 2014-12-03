@@ -1,0 +1,47 @@
+#include <bits/stdc++.h>
+using namespace std;
+#define MAX_P 159
+
+int P, L, I;
+int h[MAX_P], dist[MAX_P], t, resp;
+vector< vector<int> > adj(MAX_P);
+
+void dfs(int v)
+{
+	for (int i=0; i<adj[v].size(); ++i){
+		int nxt = adj[v][i];
+		if (dist[nxt] < dist[v]+1){
+			dist[nxt] = dist[v]+1;
+			dfs(nxt);
+		}
+	}
+	if(dist[v]>resp) resp = dist[v];
+}
+
+int main()
+{
+	scanf("%d %d %d", &P, &L, &I);
+	while (P>0){
+		for (int i=0; i<P; ++i){
+			int k;
+			scanf("%d", &k);
+			h[i] = k;
+		}
+		for (int i=0; i<L; ++i){
+			int A, B;
+			scanf("%d %d", &A, &B);
+			A--, B--;
+			if (h[A] > h[B]) adj[A].push_back(B);
+		}
+		dfs(--I);
+
+		printf("Teste %d\n", ++t);
+		printf("%d\n\n", resp);
+
+		scanf("%d %d %d", &P, &L, &I);
+		for(int i=0; i<P; ++i) adj[i].clear();
+		memset(dist, 0, sizeof(dist));
+		resp = 0;	
+	}
+	return 0;
+}
